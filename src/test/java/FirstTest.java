@@ -4,5 +4,7 @@ public class FirstTest {
 
     @Test
     public void myTest1() {
+        int ttt;
+        //test
     }
 }
