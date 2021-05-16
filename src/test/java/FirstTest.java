@@ -7,5 +7,6 @@ public class FirstTest {
         int ttt;
         //test
         int tttj;
+        int ttt6;
     }
 }
