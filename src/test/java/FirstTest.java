@@ -6,5 +6,6 @@ public class FirstTest {
     public void myTest1() {
         int ttt;
         //test
+        int tttj;
     }
 }
