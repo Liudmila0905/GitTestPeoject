@@ -50,8 +50,6 @@ public class Phone {
     public void testPositiveLogin() {
         driver.findElement(By.name("search")).sendKeys("samsung" + Keys.ENTER);
         WebElement stats = wait.until(presenceOfElementLocated(By.cssSelector("a[class='categories-filter__link categories-filter__link_type_first categories-filter__link_with_icon']")));
-        //WebElement elem = driver.findElement(By.linkText("Мобильные телефоны"));
-        //elem.click();
         WebElement phoneElem = driver.findElement(By.linkText("Мобильные телефоны")));
         phoneElem.click();
         wait.until(presenceOfElementLocated(By.className("goods-tile__price-value")));
