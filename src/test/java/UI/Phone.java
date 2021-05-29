@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 //2) Verification of 3 filters (manufacturer, price, your own choice)
 //1. Navigate to https://rozetka.com.ua/
@@ -47,11 +48,33 @@ public class Phone {
     }
 
     @Test
-    public void testPositiveLogin() {
+    public void testSamsung() throws InterruptedException {
         driver.findElement(By.name("search")).sendKeys("samsung" + Keys.ENTER);
-        WebElement stats = wait.until(presenceOfElementLocated(By.cssSelector("a[class='categories-filter__link categories-filter__link_type_first categories-filter__link_with_icon']")));
-        WebElement phoneElem = driver.findElement(By.linkText("Мобильные телефоны")));
+        wait.until(presenceOfElementLocated(By.cssSelector("button[class='button button--navy button--small catalog-settings__filter-button']")));
+        WebElement phoneElem = driver.findElement(By.cssSelector("a[href='https://rozetka.com.ua/mobile-phones/c80003/producer=samsung/']"));
         phoneElem.click();
-        wait.until(presenceOfElementLocated(By.className("goods-tile__price-value")));
+        wait.until(presenceOfElementLocated(By.cssSelector("a[class='breadcrumbs__link']")));
+
+        boolean bFindApple = addToFilterByName("Apple");
+        Thread.sleep(3000);
+        boolean bFindHuawei = addToFilterByName("Huawei");
+        Thread.sleep(3000);
+        List<WebElement> lstItems = driver.findElements(By.cssSelector("a[class='goods-tile__heading ng-star-inserted']"));
+        for(WebElement eleItem: lstItems){
+            WebElement span = eleItem.findElement(By.cssSelector("span[class='goods-tile__title']"));
+            boolean bFind = span.getText().contains("Apple") || span.getText().contains("Huawei") || span.getText().contains("Samsung");
+            Assert.assertFalse(!bFind);
+        }
+    }
+    private boolean addToFilterByName(String name) {
+        List<WebElement> options = driver.findElements(By.cssSelector("li[class='checkbox-filter__item ng-star-inserted']"));
+        for( int i = 0; i < options.size(); i++) {
+            WebElement option = options.get(i);
+            WebElement checkbox = option.findElement(By.cssSelector("input[type='checkbox']"));
+            if (checkbox.getAttribute("id").equals(name)) {
+                option.click();
+                return true;           }
+        }
+        return false;
     }
 }
