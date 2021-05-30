@@ -1,9 +1,8 @@
-package UI;
+package UI.Rozetka;
 
+import UI.Rozetka.Monitor;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.commons.lang3.ObjectUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -60,6 +59,7 @@ public class Monitors {
         Monitor monitor1 = null;
         Monitor monitor2 = null;
 
+
         ////test monitor 1
         //get first monitor with price less 4000
         WebElement elemMonitor1 = getMonitor(4000);
@@ -91,7 +91,6 @@ public class Monitors {
 
         //click on Compare Icon in header
         WebElement elemCompare = driver.findElement(By.cssSelector("span[class='counter counter--gray ng-star-inserted']"));
-        //WebElement elemCompare = driver.findElement(By.cssSelector("button[class='header__button ng-star-inserted']"));
         elemCompare.click();
 
         //click on link 'Мониторы (2)'
@@ -113,9 +112,6 @@ public class Monitors {
         strName = el2.findElement(By.cssSelector("a[class='product__heading']")).getText();
         Assert.assertTrue(monitor1.getName().equals(strName));
 
-        //String strPrice = el1.findElement(By.cssSelector("div[class='product__price--old']")).getText();
-        //strPrice = strPrice.replaceAll("\\s","");
-        //int iPrice = Integer.parseInt(strPrice);
 
     }
 

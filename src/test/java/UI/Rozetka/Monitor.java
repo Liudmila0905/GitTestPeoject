@@ -1,4 +1,4 @@
-package UI;
+package UI.Rozetka;
 
 public class Monitor {
    private String name;
