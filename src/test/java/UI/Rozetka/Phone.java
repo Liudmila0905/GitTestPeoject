@@ -111,4 +111,21 @@ public class Phone {
             assertTrue(iPrice >= 5000 && iPrice <= 15000 );
         }
     }
+    @Test
+    public void testSamsungReadyToShip () throws InterruptedException{
+        driver.findElement(By.name("search")).sendKeys("samsung" + Keys.ENTER);
+        wait.until(presenceOfElementLocated(By.cssSelector("button[class='button button--navy button--small catalog-settings__filter-button']")));
+        WebElement phoneElem = driver.findElement(By.cssSelector("a[href='https://rozetka.com.ua/mobile-phones/c80003/producer=samsung/']"));
+        phoneElem.click();
+        wait.until(presenceOfElementLocated(By.cssSelector("a[class='breadcrumbs__link']")));
+
+        boolean bFindReady = addToFilterByName("Готов к отправке");
+        Thread.sleep(3000);
+        List<WebElement> lstItems = driver.findElements(By.cssSelector("div[class='goods-tile__inner']"));
+        for (WebElement eleItem : lstItems) {
+            WebElement use = eleItem.findElement(By.cssSelector("div[class='goods-tile__availability goods-tile__availability--available ng-star-inserted']"));
+            boolean bFind = use.getText().contains("Готов к отправке");
+            Assert.assertFalse(!bFind);
+        }
+    }
 }
