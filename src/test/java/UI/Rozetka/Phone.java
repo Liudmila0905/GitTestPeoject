@@ -1,4 +1,4 @@
-package UI;
+package UI.Rozetka;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang3.ObjectUtils;
 import org.openqa.selenium.By;
@@ -25,6 +25,12 @@ import static org.testng.Assert.assertTrue;
 //3. Click "Мобильные телефоны" in the product filters panel
 //4. Add to filters "Apple" and "Huawai"
 //5. Verify all filtered products are products made by Samsung, Apple or Huawai
+
+//1. Navigate to https://rozetka.com.ua/
+//2. Search by "samsung"
+//3. Click "Мобильные телефоны" in the product filters panel
+//4. Add to price filter: 5000<price<15000
+//5. Verify all filtered products are products with price from range
 public class Phone {
     String initialUr = "https://rozetka.com.ua/";
     WebDriver driver;
@@ -60,21 +66,49 @@ public class Phone {
         boolean bFindHuawei = addToFilterByName("Huawei");
         Thread.sleep(3000);
         List<WebElement> lstItems = driver.findElements(By.cssSelector("a[class='goods-tile__heading ng-star-inserted']"));
-        for(WebElement eleItem: lstItems){
+        for (WebElement eleItem : lstItems) {
             WebElement span = eleItem.findElement(By.cssSelector("span[class='goods-tile__title']"));
             boolean bFind = span.getText().contains("Apple") || span.getText().contains("Huawei") || span.getText().contains("Samsung");
             Assert.assertFalse(!bFind);
         }
+
     }
+
     private boolean addToFilterByName(String name) {
         List<WebElement> options = driver.findElements(By.cssSelector("li[class='checkbox-filter__item ng-star-inserted']"));
-        for( int i = 0; i < options.size(); i++) {
+        for (int i = 0; i < options.size(); i++) {
             WebElement option = options.get(i);
             WebElement checkbox = option.findElement(By.cssSelector("input[type='checkbox']"));
             if (checkbox.getAttribute("id").equals(name)) {
                 option.click();
-                return true;           }
+                return true;
+            }
         }
         return false;
+    }
+
+    @Test
+    public void testSamsungPrice() throws InterruptedException {
+        driver.findElement(By.name("search")).sendKeys("samsung" + Keys.ENTER);
+        wait.until(presenceOfElementLocated(By.cssSelector("button[class='button button--navy button--small catalog-settings__filter-button']")));
+        WebElement phoneElem = driver.findElement(By.cssSelector("a[href='https://rozetka.com.ua/mobile-phones/c80003/producer=samsung/']"));
+        phoneElem.click();
+        wait.until(presenceOfElementLocated(By.cssSelector("a[class='breadcrumbs__link']")));
+        WebElement min = driver.findElement(By.cssSelector("input[formcontrolname='min']"));
+        min.clear();
+        min.sendKeys("5000");
+        WebElement max = driver.findElement(By.cssSelector("input[formcontrolname='max']"));
+        max.clear();
+        max.sendKeys("15000");
+        driver.findElement(By.cssSelector("button[type='submit']")).click();
+        Thread.sleep(3000);
+        List<WebElement> lstPrices = driver.findElements(By.cssSelector("p[class='ng-star-inserted']"));
+        for (WebElement eleItem : lstPrices) {
+            WebElement span = eleItem.findElement(By.cssSelector("span[class='goods-tile__price-value']"));
+            String sPrice = span.getText();
+            sPrice = sPrice.replaceAll("\\s","");
+            int iPrice = Integer.parseInt(sPrice);
+            assertTrue(iPrice >= 5000 && iPrice <= 15000 );
+        }
     }
 }
