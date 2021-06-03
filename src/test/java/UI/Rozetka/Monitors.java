@@ -96,7 +96,7 @@ public class Monitors {
         //click on link 'Мониторы (2)'
         WebElement monitorCompare = wait.until(presenceOfElementLocated(By.cssSelector("a[class='comparison-modal__link']")));
         monitorCompare.click();
-
+////////////////
         //check that count of monitors equals 2
         WebElement ccc = wait.until(presenceOfElementLocated(By.cssSelector("button[class*='button comparison-settings']")));
         List<WebElement> listCompare = driver.findElements(By.cssSelector("div[class='product ng-star-inserted']"));
