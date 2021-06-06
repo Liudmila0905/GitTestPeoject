@@ -12,6 +12,10 @@ public class ParentPage {
     WebDriver driver;
     WebDriverWait wait;
 
+    public ParentPage(WebDriver driver) {
+
+    }
+
     public void goBack() {
         //press 'back' button
         driver.navigate().back();
